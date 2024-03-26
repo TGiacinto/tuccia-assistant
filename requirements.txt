@@ -1,0 +1,7 @@
+SpeechRecognition
+pydub
+openai
+python-dotenv
+gTTS
+python-vlc
+PyAudio

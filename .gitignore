@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.tox/
+.pytest_cache/
+
+# Flask file (specific to Flask)
+instance/
+
+# If the project uses SQLite
+*.db
+venv/
+*.iml
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.deploy/
+.manifest
+.python-version
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables file
+.env
+
+# IDEs
+.idea/
+.vscode/
+
+# Operating system files
+.DS_Store
+
+*.mp3
