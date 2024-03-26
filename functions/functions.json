@@ -1,0 +1,27 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_currency_exchange",
+      "description": "Calculate the exchange by given currencies",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "The amount of the currency"
+          },
+          "currency_from": {
+            "type": "string",
+            "enum": ["USD", "EUR", "GBP"]
+          },
+          "currency_to": {
+            "type": "string",
+            "enum": ["USD", "EUR", "GBP"]
+          }
+        },
+        "required": ["amount", "currency_from", "currency_to"]
+      }
+    }
+  }
+]
