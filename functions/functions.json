@@ -13,14 +13,45 @@
           },
           "currency_from": {
             "type": "string",
-            "enum": ["USD", "EUR", "GBP"]
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP"
+            ]
           },
           "currency_to": {
             "type": "string",
-            "enum": ["USD", "EUR", "GBP"]
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP"
+            ]
           }
         },
-        "required": ["amount", "currency_from", "currency_to"]
+        "required": [
+          "amount",
+          "currency_from",
+          "currency_to"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_weather_api",
+      "description": "Fetches weather information for a given city",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "The name of the city for which to fetch weather information"
+          }
+        },
+        "required": [
+          "city"
+        ]
       }
     }
   }

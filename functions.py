@@ -1,6 +1,10 @@
 import json
+import os
 
 import requests
+
+import api_client
+from dialogue_management import DialogueManagement
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -8,6 +12,22 @@ def get_exchange(amount, currency_from, currency_to):
     exchange_rate = response.json()["rates"][currency_to]
     result = amount * exchange_rate
     return f"Sono: {result} {currency_to}"
+
+
+def get_weather_api(city):
+    api_key = os.getenv("WEATHER_API_KEY")
+    method = "get"
+    url = "http://api.weatherapi.com/v1/current.json"
+    params = {"q": city, "aqi": "no", "key": api_key, "lang": "it"}
+
+    result = api_client.perform_request(method, url, params=params)
+    new_management = DialogueManagement()
+    new_management.clear()
+    new_management.add_dialogue('system',
+                                'Devi interpretare un json relativo al meteo e generare una frase di senso compiuto di massimo 30 parole')
+    new_management.add_dialogue('user', str(result.content))
+    chat_gpt_answer = new_management.chat_completion()
+    return chat_gpt_answer.choices[0].message.content
 
 
 def handle_function(response_message):
@@ -19,6 +39,8 @@ def handle_function(response_message):
 
     available_functions = {
         "get_currency_exchange": get_exchange,
+        "get_weather_api": get_weather_api
+
     }
 
     if tool_calls:
