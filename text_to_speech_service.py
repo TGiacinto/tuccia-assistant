@@ -1,3 +1,4 @@
+import random
 import time
 from enum import Enum
 
@@ -12,24 +13,34 @@ import vlc
 class ServiceType(Enum):
     PYTTSX3 = 'PYTTSX3'
     OPENAI = "OPENAI"
-    GTTS = "gTTS"
+    GTTS = "gTTS",
+    FUN_VOICE = "FUN_VOICE"
 
 
 class TextToSpeechService:
-    def __init__(self, service):
+    play = True
+
+    def __init__(self, service=ServiceType.GTTS):
         self.service = service
-        self.play = True
         self.engine = self.__pyttsx3_tts_strategy(None, None)
         self._strategy_map = {
             ServiceType.GTTS: self.__google_tts_strategy,
             ServiceType.OPENAI: self.__openai_tts_strategy,
             ServiceType.PYTTSX3: self.__pyttsx3_tts_strategy,
+            ServiceType.FUN_VOICE: self.__pyttsx3_fun_voice_tts_strategy,
         }
+
+    def __pyttsx3_fun_voice_tts_strategy(self, text, path):
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 150)
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', voices[random.choice([8, 10, 12, 48])].id)
+        return engine
 
     def __pyttsx3_tts_strategy(self, text, path):
         engine = pyttsx3.init()
 
-        engine.setProperty('rate', 150)  # Regola la velocità della voce (valori tipici sono tra 100 e 200)
+        engine.setProperty('rate', 150)
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[1].id)
         return engine
@@ -45,7 +56,7 @@ class TextToSpeechService:
 
     def play_audio_from_text(self, text):
 
-        if not self.play: return
+        if not TextToSpeechService.play: return
 
         path = "audio.mp3"
 
@@ -57,7 +68,7 @@ class TextToSpeechService:
         # execute the associated function
         self._strategy_map[self.service](text, path)
 
-        if self.service == ServiceType.PYTTSX3:
+        if self.service == ServiceType.PYTTSX3 or ServiceType.FUN_VOICE:
             self.engine.say(text)
             self.engine.runAndWait()
 

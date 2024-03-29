@@ -54,5 +54,12 @@
         ]
       }
     }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "fun_voice",
+      "description": "The fun_voice function allows you to playfully change the assistant's voice by generating a random phrase."
+    }
   }
 ]

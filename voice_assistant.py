@@ -18,7 +18,7 @@ class VoiceAssistant:
         functions = fetch_function(name="functions.json")
         while True:
             try:
-                self.text_to_speech_service.play = True
+                TextToSpeechService.play = True
                 audio = self.voice_recognition.listen()
                 text = self.voice_recognition.decode_speech(audio)
                 if text:

@@ -5,6 +5,7 @@ import requests
 
 import api_client
 from dialogue_management import DialogueManagement
+from text_to_speech_service import TextToSpeechService, ServiceType
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -12,6 +13,17 @@ def get_exchange(amount, currency_from, currency_to):
     exchange_rate = response.json()["rates"][currency_to]
     result = amount * exchange_rate
     return f"Sono: {result} {currency_to}"
+
+
+def fun_voice():
+    new_management = DialogueManagement()
+    new_management.clear()
+    new_management.add_dialogue('user', 'Genera una frase divertente in italiano!')
+    chat_gpt_answer = new_management.chat_completion()
+    c = TextToSpeechService(service=ServiceType.FUN_VOICE)
+    c.play_audio_from_text(chat_gpt_answer.choices[0].message.content)
+    TextToSpeechService.play = False
+    return chat_gpt_answer.choices[0].message.content
 
 
 def get_weather_api(city):
@@ -39,7 +51,8 @@ def handle_function(response_message):
 
     available_functions = {
         "get_currency_exchange": get_exchange,
-        "get_weather_api": get_weather_api
+        "get_weather_api": get_weather_api,
+        "fun_voice": fun_voice
 
     }
 
