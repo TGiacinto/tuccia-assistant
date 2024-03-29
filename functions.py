@@ -12,18 +12,25 @@ def get_exchange(amount, currency_from, currency_to):
     response = requests.get("https://open.er-api.com/v6/latest/" + currency_from)
     exchange_rate = response.json()["rates"][currency_to]
     result = amount * exchange_rate
-    return f"Sono: {result} {currency_to}"
+    result = round(result,2)
+    return __invoke_chat_gpt_to_response(
+        f"Mi devi generare una frase per questo cambio di valuta: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result}")
+
+
+def __invoke_chat_gpt_to_response(text):
+    new_management = DialogueManagement()
+    new_management.clear()
+    new_management.add_dialogue('user', text)
+    chat_gpt_answer = new_management.chat_completion()
+    return chat_gpt_answer.choices[0].message.content
 
 
 def fun_voice():
-    new_management = DialogueManagement()
-    new_management.clear()
-    new_management.add_dialogue('user', 'Genera una frase divertente in italiano!')
-    chat_gpt_answer = new_management.chat_completion()
-    c = TextToSpeechService(service=ServiceType.FUN_VOICE)
-    c.play_audio_from_text(chat_gpt_answer.choices[0].message.content)
+    response = __invoke_chat_gpt_to_response('Genera una frase divertente in italiano!')
+    tts_service = TextToSpeechService(service=ServiceType.FUN_VOICE)
+    tts_service.play_audio_from_text(response)
     TextToSpeechService.play = False
-    return chat_gpt_answer.choices[0].message.content
+    return response
 
 
 def get_weather_api(city):
@@ -33,13 +40,8 @@ def get_weather_api(city):
     params = {"q": city, "aqi": "no", "key": api_key, "lang": "it"}
 
     result = api_client.perform_request(method, url, params=params)
-    new_management = DialogueManagement()
-    new_management.clear()
-    new_management.add_dialogue('system',
-                                'Devi interpretare un json relativo al meteo e generare una frase di senso compiuto di massimo 30 parole')
-    new_management.add_dialogue('user', str(result.content))
-    chat_gpt_answer = new_management.chat_completion()
-    return chat_gpt_answer.choices[0].message.content
+    return __invoke_chat_gpt_to_response(
+        f"Devi interpretare un json relativo al meteo e generare una frase di senso compiuto di massimo 30 parole. Il file json è: {result.content}")
 
 
 def handle_function(response_message):
