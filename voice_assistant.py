@@ -1,42 +1,24 @@
-import time
-import gtts
-import vlc
+from enum import Enum
 
+from dialogue_management import DialogueManagement
 from functions import handle_function
-from text_to_speech import TextToSpeech
+from text_to_speech_service import TextToSpeechService, ServiceType
 from utils import fetch_function
 from voice_recognition import VoiceRecognition
-from dialogue_management import DialogueManagement
-
-
-def play_audio_from_text(text, use_open_ai=False):
-    path = "audio.mp3"
-
-    if use_open_ai is False:
-        tts = gtts.gTTS(text, lang="it")
-        tts.save(path)
-    else:
-        open_ai_text_to_speech = TextToSpeech()
-        response = open_ai_text_to_speech.convert_to_speech(text)
-        response.stream_to_file(path)
-
-    v = vlc.MediaPlayer(path)
-    v.play()
-    time.sleep(1)
-    while v.is_playing():
-        time.sleep(1)
 
 
 class VoiceAssistant:
     def __init__(self):
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
+        self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
 
     def run(self):
-        play_audio_from_text("Ciao sono Tuccia Assistant. Come posso aiutarti oggi?", use_open_ai=False)
+        self.text_to_speech_service.play_audio_from_text("Ciao sono Tuccia Assistant. Come posso aiutarti oggi?")
         functions = fetch_function(name="functions.json")
         while True:
             try:
+                self.text_to_speech_service.play = True
                 audio = self.voice_recognition.listen()
                 text = self.voice_recognition.decode_speech(audio)
                 if text:
@@ -51,7 +33,7 @@ class VoiceAssistant:
                     if response_text is not None:
                         self.dialogue_management.add_dialogue('assistant', response_text)
 
-                    play_audio_from_text(response_text, use_open_ai=False)
+                    self.text_to_speech_service.play_audio_from_text(response_text)
 
             except KeyboardInterrupt:
                 break

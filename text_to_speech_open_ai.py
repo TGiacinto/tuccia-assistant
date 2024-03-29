@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 
-class TextToSpeech:
+class TextToSpeechOpenAi:
 
     def __init__(self):
         load_dotenv()

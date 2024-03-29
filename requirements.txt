@@ -5,3 +5,6 @@ python-dotenv
 gTTS
 python-vlc
 PyAudio
+pyttsx3
+pyobjc
+py3-tts
