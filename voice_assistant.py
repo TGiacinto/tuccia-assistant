@@ -1,5 +1,3 @@
-from enum import Enum
-
 from dialogue_management import DialogueManagement
 from functions import handle_function
 from text_to_speech_service import TextToSpeechService, ServiceType

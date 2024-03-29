@@ -59,7 +59,7 @@
     "type": "function",
     "function": {
       "name": "fun_voice",
-      "description": "The fun_voice function allows you to playfully change the assistant's voice by generating a random phrase."
+      "description": "The fun_voice feature allows you to playfully change the assistant's voice by generating a random phrase. It should only be activated if the user wants a funny voice!"
     }
   }
 ]
