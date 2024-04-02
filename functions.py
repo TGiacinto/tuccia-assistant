@@ -2,10 +2,24 @@ import json
 import os
 
 import requests
+from googlesearch import search
 
 import api_client
 from dialogue_management import DialogueManagement
 from text_to_speech_service import TextToSpeechService, ServiceType
+from voice_recognition import VoiceRecognition
+
+
+def search_online(user_query):
+    results = search(user_query, lang="it", advanced=True, num_results=5)
+
+    final_result = []
+    for result in results:
+        final_result.append({"description": result.description})
+        final_result.append({"url": result.description})
+
+    return __invoke_chat_gpt_to_response(
+        f"you have to extract all the descriptions, and give me a discursive summary: {str(final_result)}")
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -54,7 +68,8 @@ def handle_function(response_message):
     available_functions = {
         "get_currency_exchange": get_exchange,
         "get_weather_api": get_weather_api,
-        "fun_voice": fun_voice
+        "fun_voice": fun_voice,
+        "search_online": search_online
 
     }
 

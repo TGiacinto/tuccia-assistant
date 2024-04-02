@@ -61,5 +61,24 @@
       "name": "fun_voice",
       "description": "The fun_voice feature allows you to playfully change the assistant's voice by generating a random phrase. It should only be activated if the user wants a funny voice!"
     }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "search_online",
+      "description": "This function allows users to perform online searches. When called, it prompts the user for a search query as a parameter. If the user consents to using the function, the query is sent to an online search engine, which will return relevant results.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_query": {
+            "type": "string",
+            "description": "The search query string entered by the user for the online search."
+          }
+        },
+        "required": [
+          "user_query"
+        ]
+      }
+    }
   }
 ]

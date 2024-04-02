@@ -1,8 +1,11 @@
+import os
 import random
 import time
 from enum import Enum
 
 import pyttsx3
+from elevenlabs import save
+from elevenlabs.client import ElevenLabs
 
 from text_to_speech_open_ai import TextToSpeechOpenAi
 
@@ -14,7 +17,8 @@ class ServiceType(Enum):
     PYTTSX3 = 'PYTTSX3'
     OPENAI = "OPENAI"
     GTTS = "gTTS",
-    FUN_VOICE = "FUN_VOICE"
+    FUN_VOICE = "FUN_VOICE",
+    ELEVENLABS = "ELEVENLABS"
 
 
 class TextToSpeechService:
@@ -28,7 +32,20 @@ class TextToSpeechService:
             ServiceType.OPENAI: self.__openai_tts_strategy,
             ServiceType.PYTTSX3: self.__pyttsx3_tts_strategy,
             ServiceType.FUN_VOICE: self.__pyttsx3_fun_voice_tts_strategy,
+            ServiceType.ELEVENLABS: self.__elevenlabs_fun_voice_tts_strategy,
         }
+
+    def __elevenlabs_fun_voice_tts_strategy(self, text, path):
+        client = ElevenLabs(
+            api_key=os.environ.get("ELEVENLABS_KEY")
+        )
+        audio = client.generate(
+            text=text,
+            voice="Giovanni",
+            model="eleven_multilingual_v2",
+            stream=False
+        )
+        save(audio, path)
 
     def __pyttsx3_fun_voice_tts_strategy(self, text, path):
         engine = pyttsx3.init()
@@ -68,7 +85,7 @@ class TextToSpeechService:
         # execute the associated function
         self._strategy_map[self.service](text, path)
 
-        if self.service == ServiceType.PYTTSX3 or ServiceType.FUN_VOICE:
+        if self.service == ServiceType.PYTTSX3 or self.service == ServiceType.FUN_VOICE:
             self.engine.say(text)
             self.engine.runAndWait()
 

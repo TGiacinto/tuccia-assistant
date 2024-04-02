@@ -7,10 +7,10 @@ class VoiceRecognition:
 
     def listen(self):
         with sr.Microphone() as source:
-            print("Dimmi qualcosa...")
+            print("Say me...")
             try:
                 self.recognizer.adjust_for_ambient_noise(source)
-                audio = self.recognizer.listen(source, timeout=1)
+                audio = self.recognizer.listen(source, timeout=2, phrase_time_limit=5)
                 return audio
             except sr.WaitTimeoutError as e:
                 return None
@@ -20,6 +20,6 @@ class VoiceRecognition:
             if audio is None: return
             return self.recognizer.recognize_google(audio, language='it-IT')
         except sr.UnknownValueError:
-            print("Non ho capito quello che hai detto")
+            print("I dont understand!")
         except sr.RequestError as e:
-            print(f"Errore nella richiesta a Google Speech Recognition service; {e}")
+            print(f"Error Google Speech Recognition service; {e}")
