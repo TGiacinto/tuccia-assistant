@@ -7,17 +7,19 @@ from openai._types import NotGiven
 class DialogueManagement:
     def __init__(self):
         load_dotenv()
+        self.language = os.environ.get("LANGUAGE")
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        self.dialogue = self._init_dialogue()
+        self.dialogue = self._init_dialogue(self.language)
 
     @staticmethod
-    def _init_dialogue():
+    def _init_dialogue(language):
         role = "system"
         content = (
-            "Tu sei il Tuccia Assistant e sei un assistente vocale. Rispondi con un massimo di 30 parole! Devi capire cosa dice l'utente! Attenzione, puoi chiamare anche le function!")
+            f"I'm Tuccia Assistant, your voice assistant. I understand and respond to your queries. I can call the functions! I reply with max 20 words! You must reply in language: {language}")
         return [{"role": role, "content": content}]
 
     def add_dialogue(self, role, text):
+        text += f' You must reply in {self.language}'
         self.dialogue.append({"role": role, "content": text})
 
     def add_function(self, role, content, tool_call_id, name):

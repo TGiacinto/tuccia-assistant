@@ -8,12 +8,16 @@ class VoiceRecognition:
     def listen(self):
         with sr.Microphone() as source:
             print("Dimmi qualcosa...")
-            self.recognizer.adjust_for_ambient_noise(source)
-            audio = self.recognizer.listen(source, phrase_time_limit=5)
-            return audio
+            try:
+                self.recognizer.adjust_for_ambient_noise(source)
+                audio = self.recognizer.listen(source, timeout=1)
+                return audio
+            except sr.WaitTimeoutError as e:
+                return None
 
     def decode_speech(self, audio):
         try:
+            if audio is None: return
             return self.recognizer.recognize_google(audio, language='it-IT')
         except sr.UnknownValueError:
             print("Non ho capito quello che hai detto")

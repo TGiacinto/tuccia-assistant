@@ -12,9 +12,9 @@ def get_exchange(amount, currency_from, currency_to):
     response = requests.get("https://open.er-api.com/v6/latest/" + currency_from)
     exchange_rate = response.json()["rates"][currency_to]
     result = amount * exchange_rate
-    result = round(result,2)
+    result = round(result, 2)
     return __invoke_chat_gpt_to_response(
-        f"Mi devi generare una frase per questo cambio di valuta: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result}")
+        f"You need to generate a phrase for this currency exchange: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
 
 
 def __invoke_chat_gpt_to_response(text):
@@ -26,7 +26,7 @@ def __invoke_chat_gpt_to_response(text):
 
 
 def fun_voice():
-    response = __invoke_chat_gpt_to_response('Genera una frase divertente in italiano!')
+    response = __invoke_chat_gpt_to_response('Generate a funny sentence with 10 words!')
     tts_service = TextToSpeechService(service=ServiceType.FUN_VOICE)
     tts_service.play_audio_from_text(response)
     TextToSpeechService.play = False
@@ -41,7 +41,7 @@ def get_weather_api(city):
 
     result = api_client.perform_request(method, url, params=params)
     return __invoke_chat_gpt_to_response(
-        f"Devi interpretare un json relativo al meteo e generare una frase di senso compiuto di massimo 30 parole. Il file json è: {result.content}")
+        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 30 words. The json file is: {result.content}")
 
 
 def handle_function(response_message):

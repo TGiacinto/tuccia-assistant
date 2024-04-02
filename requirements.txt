@@ -8,3 +8,4 @@ PyAudio
 pyttsx3
 pyobjc
 py3-tts
+elevenlabs
