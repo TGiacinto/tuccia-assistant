@@ -7,7 +7,6 @@ from googlesearch import search
 import api_client
 from dialogue_management import DialogueManagement
 from text_to_speech_service import TextToSpeechService, ServiceType
-from voice_recognition import VoiceRecognition
 
 
 def search_online(user_query):
@@ -19,7 +18,7 @@ def search_online(user_query):
         final_result.append({"url": result.description})
 
     return __invoke_chat_gpt_to_response(
-        f"you have to extract all the descriptions, and give me a discursive summary: {str(final_result)}")
+        f"you have to extract all the descriptions, and give me a discursive summary.", str(final_result))
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -28,19 +27,21 @@ def get_exchange(amount, currency_from, currency_to):
     result = amount * exchange_rate
     result = round(result, 2)
     return __invoke_chat_gpt_to_response(
-        f"You need to generate a phrase for this currency exchange: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
+        prompt=None,
+        text=f"You need to generate a phrase for this currency exchange: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
 
 
-def __invoke_chat_gpt_to_response(text):
+def __invoke_chat_gpt_to_response(prompt, text):
     new_management = DialogueManagement()
     new_management.clear()
+    new_management.add_dialogue('system', prompt)
     new_management.add_dialogue('user', text)
     chat_gpt_answer = new_management.chat_completion()
     return chat_gpt_answer.choices[0].message.content
 
 
 def fun_voice():
-    response = __invoke_chat_gpt_to_response('Generate a funny sentence with 10 words!')
+    response = __invoke_chat_gpt_to_response(prompt=None, text='Generate a funny sentence with 10 words!')
     tts_service = TextToSpeechService(service=ServiceType.FUN_VOICE)
     tts_service.play_audio_from_text(response)
     TextToSpeechService.play = False
@@ -55,7 +56,8 @@ def get_weather_api(city):
 
     result = api_client.perform_request(method, url, params=params)
     return __invoke_chat_gpt_to_response(
-        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 30 words. The json file is: {result.content}")
+        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 30 words.",
+        f' The json file is: {result.content}')
 
 
 def handle_function(response_message):

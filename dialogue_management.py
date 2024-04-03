@@ -19,7 +19,9 @@ class DialogueManagement:
         return [{"role": role, "content": content}]
 
     def add_dialogue(self, role, text):
-        text += f' You must reply in {self.language}'
+        if role == 'prompt':
+            text += f' You must reply in {self.language}'
+
         self.dialogue.append({"role": role, "content": text})
 
     def add_function(self, role, content, tool_call_id, name):
