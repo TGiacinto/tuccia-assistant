@@ -1,38 +1,84 @@
-# 🎙️ Documentazione dell'Assistente Vocale 🎙️
+# 🎙️ Voice Assistant Documentation 🎙️
 
-🚀 Questo progetto ti permette di creare un sofisticato assistente vocale sfruttando l'API OpenAI e il modulo di riconoscimento vocale di Google. Il codice è suddiviso in tre moduli principali per una robusta e chiara strutturazione del codice.
+🚀 This project allows you to create a sophisticated voice assistant using the OpenAI API and the Google speech recognition module. The code is divided into three main modules for a robust and clear code structure.
 
-> ⚠️ **Prerequisiti**: Prima di eseguire il progetto, assicurati di aggiungere la variabile di ambiente `OPENAI_API_KEY` con la tua chiave API personale di OpenAI e di avere installato VLC media player nel tuo sistema. ⚠️
+> ⚠️ **Prerequisites**: Before running the project, make sure to add the `OPENAI_API_KEY` environment variable with your personal OpenAI API key and to have VLC media player installed on your system. Also, make sure you have Python and pip installed in your environment.⚠️
 
-## 👂 Modulo: voice_recognition.py
+## 🛠️ Local Installation
 
-Il modulo `voice_recognition.py` agisce come le "orecchie" del nostro assistente vocale. Questo modulo gestisce l'ascolto dell'input dell'utente e la sua successiva conversione in testo.
+To install the project locally, follow these steps:
 
-🎯 Questo modulo include la classe `VoiceRecognition` con i metodi:
-- `listen()` 🎤: Ascolta l'input dell'utente tramite il microfono.
-- `decode_speech(audio)` 📝: Converti l'input vocale in testo.
+1. Create a virtual environment using `venv`:
 
-## 💬 Modulo: dialogue_management.py
+```bash
+python3 -m venv venv
+```
 
-Il modulo `dialogue_management.py` è il cervello del nostro assistente, gestendo il dialogo tra l'utente e l'assistente.
+2. Activate the virtual environment:
 
-🎯 Questo modulo contiene la classe `DialogueManagement` con metodi come:
-- `_init_dialogue()` 💼: Inizializza il dialogo impostando le dichiarazioni iniziali del sistema.
-- `add_dialogue(role, text)` 🗣️: Aggiunge nuovi dialoghi al discussioni correnti.
-- `chat_completion()` 🤖: Genera una risposta appropriata usando l'API di OpenAI.
+    - On Windows:
 
-## 🗣️ Modulo: voice_assistant.py
+   ```bash
+   venv\Scripts\activate
+   ```
 
-Il modulo `voice_assistant.py` è il modulo principale e il punto di ingresso di questo progetto. Unisce i moduli `dialogue_management.py` e `voice_recognition.py` in una singola applicazione di assistente vocale.
+    - On Unix or MacOS:
 
-La classe `VoiceAssistant` in questo modulo ha i seguenti metodi:
-- `escape_character(text)` 🧹: Rimuove i caratteri di escape dal testo, rendendo sicuro l'input.
-- `run()` 🏃‍♂️: Avvia l'interazione con l'assistente vocale e continua finché non viene interrotto.
+   ```bash
+   source venv/bin/activate
+   ```
+
+3. Install project dependencies using `pip`:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+## 👂 Module: voice_recognition.py
+
+The `voice_recognition.py` module acts as the "ears" of our voice assistant. This module handles listening to user input and its subsequent conversion to text.
+
+🎯 This module includes the `VoiceRecognition` class with methods:
+- `listen()` 🎤: Listen to user input via the microphone.
+- `decode_speech(audio)` 📝: Convert voice input to text.
+
+## 💬 Module: dialogue_management.py
+
+The `dialogue_management.py` module is the brain of our assistant, managing the dialogue between the user and the assistant.
+
+🎯 This module contains the `DialogueManagement` class with methods like:
+- `_init_dialogue()` 💼: Initialize dialogue by setting up initial system statements.
+- `add_dialogue(role, text)` 🗣️: Add new dialogues to ongoing discussions.
+- `chat_completion()` 🤖: Generate an appropriate response using the OpenAI API.
+
+## 🗣️ Module: voice_assistant.py
+
+The `voice_assistant.py` module is the main module and entry point of this project. It combines the `dialogue_management.py` and `voice_recognition.py` modules into a single voice assistant application.
+
+The `VoiceAssistant` class in this module has the following methods:
+- `escape_character(text)` 🧹: Remove escape characters from text, making input safe.
+- `run()` 🏃‍♂️: Start the interaction with the voice assistant and continue until interrupted.
 
 ---
 
-💡 Per effettuare il run esegui:
+💡 **Available Text-to-Speech Services**:
+- `PYTTSX3`: Pyttsx3
+- `OPENAI`: OpenAI
+- `GTTS`: gTTS
+- `FUN_VOICE`: Fun Voice
+- `ELEVENLABS`: ElevenLabs *(requires key configuration)*
 
-`python3 main.py`
+ℹ️ **Next Implementation**: Integration with Home Assistant will soon be added for enhanced automation and home control.
 
-Buon divertimento! 🎉
+💡 To run, execute:
+
+```bash
+python3 main.py
+```
+
+💡 To change the Text-to-Speech service, modify the value of the `service` variable in the `__init__` method of the `VoiceAssistant` module.
+- `TextToSpeechService(service=ServiceType.GTTS)` 🗣️
+
+Have fun! 🎉
+
+---
