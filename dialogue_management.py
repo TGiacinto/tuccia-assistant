@@ -19,8 +19,8 @@ class DialogueManagement:
         return [{"role": role, "content": content}]
 
     def add_dialogue(self, role, text):
-        if role == 'prompt':
-            text += f' You must reply in {self.language}'
+        if role == 'system':
+            text += f' You must reply in **{self.language}**'
 
         self.dialogue.append({"role": role, "content": text})
 

@@ -18,7 +18,7 @@ def search_online(user_query):
         final_result.append({"url": result.description})
 
     return __invoke_chat_gpt_to_response(
-        f"you have to extract all the descriptions, and give me a discursive summary.", str(final_result))
+        f"you have to extract all the descriptions, and give me a discursive summary. Max 20 words", str(final_result))
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -27,14 +27,16 @@ def get_exchange(amount, currency_from, currency_to):
     result = amount * exchange_rate
     result = round(result, 2)
     return __invoke_chat_gpt_to_response(
-        prompt=None,
-        text=f"You need to generate a phrase for this currency exchange: amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
+        prompt="You need to generate a phrase for this currency exchange",
+        text=f"amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
 
 
 def __invoke_chat_gpt_to_response(prompt, text):
     new_management = DialogueManagement()
     new_management.clear()
-    new_management.add_dialogue('system', prompt)
+    if prompt is not None:
+        new_management.add_dialogue('system', prompt)
+
     new_management.add_dialogue('user', text)
     chat_gpt_answer = new_management.chat_completion()
     return chat_gpt_answer.choices[0].message.content
@@ -56,7 +58,7 @@ def get_weather_api(city):
 
     result = api_client.perform_request(method, url, params=params)
     return __invoke_chat_gpt_to_response(
-        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 30 words.",
+        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 10 words.",
         f' The json file is: {result.content}')
 
 

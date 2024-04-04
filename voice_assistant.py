@@ -9,7 +9,7 @@ class VoiceAssistant:
     def __init__(self):
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
-        self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
+        self.text_to_speech_service = TextToSpeechService(service=ServiceType.GTTS)
 
     def run(self):
         self.text_to_speech_service.play_audio_from_text("Ciao sono Tuccia Assistant. Come posso aiutarti oggi?")

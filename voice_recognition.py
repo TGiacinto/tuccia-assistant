@@ -10,7 +10,7 @@ class VoiceRecognition:
             print("Say me...")
             try:
                 self.recognizer.adjust_for_ambient_noise(source)
-                audio = self.recognizer.listen(source, timeout=2, phrase_time_limit=5)
+                audio = self.recognizer.listen(source, timeout=3, phrase_time_limit=10)
                 return audio
             except sr.WaitTimeoutError as e:
                 return None
