@@ -15,7 +15,7 @@ class DialogueManagement:
     def _init_dialogue(language):
         role = "system"
         content = (
-            f"I'm Tuccia Assistant, your voice assistant. I understand and respond to your queries. I can call the functions! I reply with max 20 words! You must reply in language: {language}")
+            f"I'm Tuccia Assistant, your voice assistant. I understand and respond to your queries. You should search online only if the user requests it. I can call the functions! I reply with max 20 words! You must reply in language: {language}")
         return [{"role": role, "content": content}]
 
     def add_dialogue(self, role, text):
