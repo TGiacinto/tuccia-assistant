@@ -1,0 +1,11 @@
+SpeechRecognition
+pydub
+openai
+python-dotenv
+gTTS
+python-vlc
+PyAudio
+pyttsx3
+py3-tts
+elevenlabs
+duckduckgo_search
