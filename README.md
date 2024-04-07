@@ -28,6 +28,18 @@ python3 -m venv venv
    source venv/bin/activate
    ```
 
+If you're using Linux, run the script_linux.sh script:
+  ```bash
+   ./script_linux.sh
+   ```
+and run 
+```bash
+pip3 install -r requirements_linux.txt
+```
+
+If you're using MACOS:
+
+
 3. Install project dependencies using `pip`:
 
 ```bash
