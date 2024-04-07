@@ -10,3 +10,4 @@ pyobjc
 py3-tts
 elevenlabs
 duckduckgo_search
+HomeAssistant-API
