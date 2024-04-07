@@ -9,4 +9,4 @@ pyttsx3
 pyobjc
 py3-tts
 elevenlabs
-googlesearch-python
+duckduckgo_search

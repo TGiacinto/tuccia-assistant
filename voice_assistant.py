@@ -11,8 +11,15 @@ class VoiceAssistant:
         self.dialogue_management = DialogueManagement()
         self.text_to_speech_service = TextToSpeechService(service=ServiceType.GTTS)
 
+    def __start(self):
+        self.dialogue_management.add_dialogue('user',
+                                              "Give me a welcome phrase, saying that your name is what you can do.")
+        chat_completion = self.dialogue_management.chat_completion()
+        message = chat_completion.choices[0].message.content
+        self.text_to_speech_service.play_audio_from_text(message)
+
     def run(self):
-        self.text_to_speech_service.play_audio_from_text("Ciao sono Tuccia Assistant. Come posso aiutarti oggi?")
+        self.__start()
         functions = fetch_function(name="functions.json")
         while True:
             try:

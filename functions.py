@@ -1,24 +1,21 @@
 import json
-import os
 
 import requests
-from googlesearch import search
+from duckduckgo_search import DDGS
 
-import api_client
 from dialogue_management import DialogueManagement
 from text_to_speech_service import TextToSpeechService, ServiceType
 
 
 def search_online(user_query):
-    results = search(user_query, lang="it", advanced=True, num_results=5)
-
+    results = DDGS().news(keywords=user_query, region="it-it", max_results=5, safesearch="off")
     final_result = []
+
     for result in results:
-        final_result.append({"description": result.description})
-        final_result.append({"url": result.description})
+        final_result.append({"description": result['body']})
 
     return __invoke_chat_gpt_to_response(
-        f"you have to extract all the descriptions, and give me a discursive summary. Max 20 words", str(final_result))
+        f"you have to extract all the descriptions, clean the text  and give me a discursive summary. Max 20 words", str(final_result))
 
 
 def get_exchange(amount, currency_from, currency_to):
@@ -50,18 +47,6 @@ def fun_voice():
     return response
 
 
-def get_weather_api(city):
-    api_key = os.getenv("WEATHER_API_KEY")
-    method = "get"
-    url = "http://api.weatherapi.com/v1/current.json"
-    params = {"q": city, "aqi": "no", "key": api_key, "lang": "it"}
-
-    result = api_client.perform_request(method, url, params=params)
-    return __invoke_chat_gpt_to_response(
-        f"You must interpret a json related to the weather and generate a meaningful sentence of maximum 10 words.",
-        f' The json file is: {result.content}')
-
-
 def handle_function(response_message):
     function_response = None
     function_name = None
@@ -71,7 +56,6 @@ def handle_function(response_message):
 
     available_functions = {
         "get_currency_exchange": get_exchange,
-        "get_weather_api": get_weather_api,
         "fun_voice": fun_voice,
         "search_online": search_online
 
