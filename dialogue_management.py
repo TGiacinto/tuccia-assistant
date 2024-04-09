@@ -9,14 +9,7 @@ class DialogueManagement:
         load_dotenv()
         self.language = os.environ.get("LANGUAGE")
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        self.dialogue = self._init_dialogue(self.language)
-
-    @staticmethod
-    def _init_dialogue(language):
-        role = "system"
-        content = (
-            f"I'm Tuccia Assistant, your voice assistant. I understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! I reply with a maximum of 20 words! You must reply in language: {language}")
-        return [{"role": role, "content": content}]
+        self.dialogue =[]
 
     def add_dialogue(self, role, text):
         if role == 'system':

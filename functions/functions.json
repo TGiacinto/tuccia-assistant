@@ -24,5 +24,41 @@
         ]
       }
     }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "home_assistant",
+      "description": "This function represents a home automation helper service. It can be used to control and interact with different devices in your home. It can receive different commands and operations based on the context of the application.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "string",
+            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in english!"
+          },
+          "device_name": {
+            "type": "string",
+            "description": "This parameter is another string representing the name of the specific device you want to access or control in your home. This is typically a unique identifier for each device."
+          },
+          "all": {
+            "type": "boolean",
+            "description": "If you want to turn everything on or off."
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ON",
+              "OFF"
+            ],
+            "description": "Indicates the action to be performed. Accepts only 'ON' to activate and 'OFF' to deactivate."
+          }
+        },
+        "required": [
+          "device",
+          "action"
+        ]
+      }
+    }
   }
 ]

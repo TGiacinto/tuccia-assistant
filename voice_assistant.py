@@ -1,5 +1,6 @@
 from dialogue_management import DialogueManagement
 from functions import handle_function
+from home_assistant.home_assistant import HomeAssistant
 from text_to_speech_service import TextToSpeechService, ServiceType
 from utils import fetch_function
 from voice_recognition import VoiceRecognition
@@ -9,11 +10,18 @@ class VoiceAssistant:
     def __init__(self):
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
-        self.text_to_speech_service = TextToSpeechService(service=ServiceType.GTTS)
+        self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
 
     def __start(self):
-        self.dialogue_management.add_dialogue('user',
-                                              "Give me a welcome phrase, saying that your name is what you can do.")
+        home_assistant = HomeAssistant()
+        ha_is_active = home_assistant.is_active()
+
+        prompt = f'You are Tuccia Assistant, a voice assistant. Understand and answer your questions. You should invoke the search_online function only if the user requests it. You can interact with Home Assistant. Any device-related requests invoke the "home_assistant" function. So you need to carefully understand user intent. I can call functions! I reply with a maximum of 20 words!' if ha_is_active else f'You are Tuccia Assistant, a voice assistant. You understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! I reply with a maximum of 20 words!'
+
+        self.dialogue = self.dialogue_management.add_dialogue(role='system', text=prompt)
+        sentence = "Hi, what's your name? What can you do? You can control home devices." if ha_is_active else "Hi, what's your name? What can you do? . You need to tell the user that they need to configure home assistant for a better home automation experience"
+
+        self.dialogue_management.add_dialogue(role='user', text=sentence)
         chat_completion = self.dialogue_management.chat_completion()
         message = chat_completion.choices[0].message.content
         self.text_to_speech_service.play_audio_from_text(message)

@@ -10,14 +10,14 @@ class VoiceRecognition:
             print("Say me...")
             try:
                 self.recognizer.adjust_for_ambient_noise(source)
-                audio = self.recognizer.listen(source, timeout=3, phrase_time_limit=10)
+                audio = self.recognizer.listen(source, phrase_time_limit=5)
                 return audio
             except sr.WaitTimeoutError as e:
                 return None
 
     def decode_speech(self, audio):
         try:
-            if audio is None: return
+            if audio is None and audio != '': return
             return self.recognizer.recognize_google(audio, language='it-IT')
         except sr.UnknownValueError:
             print("I dont understand!")
