@@ -1,4 +1,4 @@
-from voice_assistant import VoiceAssistant
+from assistant.voice_assistant import VoiceAssistant
 
 if __name__ == "__main__":
     assistant = VoiceAssistant()

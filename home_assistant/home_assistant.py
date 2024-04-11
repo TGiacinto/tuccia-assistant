@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from homeassistant_api import Client
 
-import utils
+from utils import utils
 
 
 class HomeAssistant:

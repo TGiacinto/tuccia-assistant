@@ -1,16 +1,16 @@
-from dialogue_management import DialogueManagement
-from functions import handle_function
+from dialogue.dialogue_management import DialogueManagement
+from functions.functions import handle_function
 from home_assistant.home_assistant import HomeAssistant
-from text_to_speech_service import TextToSpeechService, ServiceType
-from utils import fetch_function
-from voice_recognition import VoiceRecognition
+from recognition.voice_recognition import VoiceRecognition
+from text_to_speech.text_to_speech_service import TextToSpeechService, ServiceType
+from utils.utils import fetch_function
 
 
 class VoiceAssistant:
     def __init__(self):
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
-        self.text_to_speech_service = TextToSpeechService(service=ServiceType.GTTS)
+        self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
 
     def __start(self):
         home_assistant = HomeAssistant()

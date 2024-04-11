@@ -19,4 +19,4 @@ def filter_device(data, device, device_name):
 
 
 def fetch_function(name):
-    return load_file('functions', name)
+    return load_file('../functions', name)

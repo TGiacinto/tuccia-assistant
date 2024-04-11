@@ -3,11 +3,11 @@ import json
 import requests
 from duckduckgo_search import DDGS
 
-import utils
-from dialogue_management import DialogueManagement
+from dialogue.dialogue_management import DialogueManagement
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
-from text_to_speech_service import TextToSpeechService, ServiceType
+from text_to_speech.text_to_speech_service import TextToSpeechService, ServiceType
+from utils import utils
 
 
 def search_online(user_query):

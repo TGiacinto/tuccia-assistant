@@ -1,6 +1,7 @@
-from openai import OpenAI
 import os
+
 from dotenv import load_dotenv
+from openai import OpenAI
 from openai._types import NotGiven
 
 
@@ -9,7 +10,7 @@ class DialogueManagement:
         load_dotenv()
         self.language = os.environ.get("LANGUAGE")
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        self.dialogue =[]
+        self.dialogue = []
 
     def add_dialogue(self, role, text):
         if role == 'system':
