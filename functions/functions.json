@@ -9,6 +9,13 @@
   {
     "type": "function",
     "function": {
+      "name": "get_devices_state",
+      "description": "The 'get_devices_state' function is designed to retrieve the current state of devices. Through this function, detailed information about the devices can be obtained, such as whether they are active or inactive, their availability, and other details relevant to their operational status."
+    }
+  },
+  {
+    "type": "function",
+    "function": {
       "name": "search_online",
       "description": "This function allows users to perform online searches. When called, it prompts the user for a search query as a parameter. If the user consents to using the function, the query is sent to an online search engine, which will return relevant results.",
       "parameters": {

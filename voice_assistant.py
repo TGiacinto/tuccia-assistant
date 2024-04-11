@@ -10,7 +10,7 @@ class VoiceAssistant:
     def __init__(self):
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
-        self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
+        self.text_to_speech_service = TextToSpeechService(service=ServiceType.ELEVENLABS)
 
     def __start(self):
         home_assistant = HomeAssistant()

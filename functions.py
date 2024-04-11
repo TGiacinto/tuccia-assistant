@@ -22,6 +22,15 @@ def search_online(user_query):
         str(final_result))
 
 
+def get_devices_state():
+    ha = HomeAssistant()
+    states = ha.get_my_states()
+
+    return __invoke_chat_gpt_to_response(
+        prompt=f'You are an vocal assistant. You must create a sentence. You have to interpret the json:: {str(states)}. ',
+        text=f'Can you give me the status?')
+
+
 def home_assistant(device, device_name, all=None, action=None):
     ha = HomeAssistant()
     states = ha.get_my_states()
@@ -42,7 +51,7 @@ def home_assistant(device, device_name, all=None, action=None):
     domain = entity_id.split('.')[0]
 
     invoke = {
-        'light': Light(ha)
+        'light': Light(ha),
     }
 
     invoke[domain].activate(entity_id) if action == 'ON' else invoke[domain].deactivate(entity_id)
@@ -92,7 +101,8 @@ def handle_function(response_message):
         "get_currency_exchange": get_exchange,
         "fun_voice": fun_voice,
         "search_online": search_online,
-        "home_assistant": home_assistant
+        "home_assistant": home_assistant,
+        "get_devices_state": get_devices_state
     }
 
     if tool_calls:
