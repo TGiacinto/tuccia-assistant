@@ -4,6 +4,7 @@ import requests
 from duckduckgo_search import DDGS
 
 from dialogue.dialogue_management import DialogueManagement
+from home_assistant.alarm import Alarm
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
 from text_to_speech.text_to_speech_service import TextToSpeechService, ServiceType
@@ -52,6 +53,7 @@ def home_assistant(device, device_name, all=None, action=None):
 
     invoke = {
         'light': Light(ha),
+        'alarm_control_panel': Alarm(ha)
     }
 
     invoke[domain].activate(entity_id) if action == 'ON' else invoke[domain].deactivate(entity_id)
