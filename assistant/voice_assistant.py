@@ -11,12 +11,12 @@ class VoiceAssistant:
         self.voice_recognition = VoiceRecognition()
         self.dialogue_management = DialogueManagement()
         self.text_to_speech_service = TextToSpeechService(service=ServiceType.PYTTSX3)
+        self.home_assistant = HomeAssistant()
 
     def __start(self):
-        home_assistant = HomeAssistant()
-        ha_is_active = home_assistant.is_active()
+        ha_is_active = self.home_assistant.is_active()
 
-        prompt = f'You are Tuccia Assistant, a voice assistant. Understand and answer your questions. You should invoke the search_online function only if the user requests it. You can interact with Home Assistant. Any device-related requests invoke the "home_assistant" function. So you need to carefully understand user intent. I can call functions! I reply with a maximum of 20 words! You must use friendly language.' if ha_is_active else f'You are Tuccia Assistant, a voice assistant. You understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! I reply with a maximum of 20 words! You must use friendly language!'
+        prompt = f'You are Tuccia Assistant, a voice assistant. Understand and answer your questions. You should invoke the search_online function only if the user requests it. You can interact with Home Assistant. Any device-related requests invoke the "home_assistant" function. So you need to carefully understand user intent. I can call functions! I reply with a maximum of 20 words! You must use friendly language.' if ha_is_active else f'You are Tuccia Assistant, a voice assistant. You understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! You cannot interact with Home Assistant because the user has not configured it.  You reply with a maximum of 20 words! You must use friendly language. '
 
         self.dialogue = self.dialogue_management.add_dialogue(role='system', text=prompt)
         sentence = "Hi, what's your name? What can you do? You can control home devices." if ha_is_active else "Hi, what's your name? What can you do? . You need to tell the user that they need to configure home assistant for a better home automation experience"
@@ -28,7 +28,8 @@ class VoiceAssistant:
 
     def run(self):
         self.__start()
-        functions = fetch_function(name="functions.json")
+        function_name = "functions_home_assistant.json" if self.home_assistant.is_active() else "functions.json"
+        functions = fetch_function(name=function_name)
         while True:
             try:
                 TextToSpeechService.play = True
