@@ -32,7 +32,8 @@ class DialogueManagement:
     def chat_completion(self, function=NotGiven(), tool_choice=NotGiven()):
         return self.client.chat.completions.create(
             messages=self.dialogue,
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo-0125",
             tools=function,
-            tool_choice=tool_choice
+            tool_choice=tool_choice,
+            temperature=0.0
         )
