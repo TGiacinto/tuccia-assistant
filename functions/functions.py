@@ -33,7 +33,7 @@ def get_devices_state():
         text=f'Can you give me the status?')
 
 
-def home_assistant(device, device_name=None, all=None, action=None, location=None):
+def home_assistant(device, device_name=None, all=None, action=None, location=None, color=None):
     if device_name is None:
         device_name = ''
 
@@ -58,7 +58,7 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
     domain = entity_id.split('.')[0]
 
     invoke = {
-        'light': Light(ha),
+        'light': Light(home_assistant=ha, color=color),
         'alarm_control_panel': Alarm(ha),
         'climate': Climate(ha)
     }
