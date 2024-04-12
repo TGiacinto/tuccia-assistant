@@ -24,6 +24,11 @@ class DialogueManagement:
     def clear(self):
         self.dialogue = []
 
+    def error(self):
+        self.add_dialogue('system',
+                          'If you receive the word: Error, you must respond to the user by telling them to formulate the sentence in another way. You have to be friendly')
+        self.add_dialogue('user', 'error')
+
     def chat_completion(self, function=NotGiven(), tool_choice=NotGiven()):
         return self.client.chat.completions.create(
             messages=self.dialogue,

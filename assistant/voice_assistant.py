@@ -49,5 +49,9 @@ class VoiceAssistant:
 
                     self.text_to_speech_service.play_audio_from_text(response_text)
 
-            except KeyboardInterrupt:
-                break
+            except Exception as e:
+                error = DialogueManagement()
+                error.error()
+                chat_completion = error.chat_completion()
+                message = chat_completion.choices[0].message.content
+                self.text_to_speech_service.play_audio_from_text(message)
