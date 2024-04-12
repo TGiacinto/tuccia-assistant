@@ -12,7 +12,7 @@ class TextToSpeechOpenAi:
 
     def convert_to_speech(self, text):
         return self.client.audio.speech.create(
-            model="tts-1",
-            voice="echo",
+            model="tts-1-hd",
+            voice="fable",
             input=text
         )
