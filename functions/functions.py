@@ -5,6 +5,7 @@ from duckduckgo_search import DDGS
 
 from dialogue.dialogue_management import DialogueManagement
 from home_assistant.alarm import Alarm
+from home_assistant.climate import Climate
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
 from text_to_speech.text_to_speech_service import TextToSpeechService, ServiceType
@@ -32,10 +33,15 @@ def get_devices_state():
         text=f'Can you give me the status?')
 
 
-def home_assistant(device, device_name, all=None, action=None):
+def home_assistant(device, device_name=None, all=None, action=None, location=None):
+    if device_name is None:
+        device_name = ''
+
     ha = HomeAssistant()
     states = ha.get_my_states()
     result = utils.filter_device(states, device, device_name)
+
+    device_name += f' {location}' if device_name is not None else f' {location}'
 
     chat_gtp_response = __invoke_chat_gpt_to_response(
         prompt=f'These are all device: {str(states)}. In input you receive the name and the device. You need to figure out which ones are in the json. You need to respond with json with key result: <entity_id>.',
@@ -53,7 +59,8 @@ def home_assistant(device, device_name, all=None, action=None):
 
     invoke = {
         'light': Light(ha),
-        'alarm_control_panel': Alarm(ha)
+        'alarm_control_panel': Alarm(ha),
+        'climate': Climate(ha)
     }
 
     invoke[domain].activate(entity_id) if action == 'ON' else invoke[domain].deactivate(entity_id)

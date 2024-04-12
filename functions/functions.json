@@ -36,13 +36,17 @@
     "type": "function",
     "function": {
       "name": "home_assistant",
-      "description": "This function represents a home automation helper service. It can be used to control and interact with different devices in your home. It can receive different commands and operations based on the context of the application.",
+      "description": "A method that controls the activation and deactivation of household devices.",
       "parameters": {
         "type": "object",
         "properties": {
+          "location": {
+            "type": "string",
+            "description": "Indicates the location of the device. This can be the name of the room or a general description of the device's position in your home."
+          },
           "device": {
             "type": "string",
-            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in english!"
+            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
           },
           "device_name": {
             "type": "string",
