@@ -114,6 +114,8 @@ def handle_function(response_message):
         "get_devices_state": get_devices_state
     }
 
+    result_responses = []
+
     if tool_calls:
         for tool_call in tool_calls:
             if tool_call.function.name in available_functions:
@@ -121,8 +123,9 @@ def handle_function(response_message):
                 function_response = available_functions[tool_call.function.name](**function_args)
                 function_name = tool_call.function.name
                 tool_call_id = tool_call.id
-            break
+                result_responses.append(function_response)
+
     else:
         response_chat_gpt = response_message.content
 
-    return response_chat_gpt, function_response, function_name, tool_call_id
+    return response_chat_gpt, result_responses, function_name, tool_call_id

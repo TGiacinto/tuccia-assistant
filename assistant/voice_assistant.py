@@ -16,7 +16,7 @@ class VoiceAssistant:
     def __start(self):
         ha_is_active = self.home_assistant.is_active()
 
-        prompt = f'You are Tuccia Assistant, a voice assistant. Understand and answer your questions. You should invoke the search_online function only if the user requests it. You can interact with Home Assistant. Any device-related requests invoke the "home_assistant" function. So you need to carefully understand user intent. I can call functions! I reply with a maximum of 20 words! You must use friendly language.' if ha_is_active else f'You are Tuccia Assistant, a voice assistant. You understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! You cannot interact with Home Assistant because the user has not configured it.  You reply with a maximum of 20 words! You must use friendly language. '
+        prompt = f'You are Tuccia Assistant, a voice assistant. Understand and answer your questions. You should invoke the search_online function only if the user requests it. You can interact with Home Assistant. Any device-related requests invoke the "home_assistant" function. So you need to carefully understand user intent. You can call functions also in parallel! Each request to device, **you must call the functions**. Don\'t take initiative I reply with a maximum of 20 words! You must use friendly language.' if ha_is_active else f'You are Tuccia Assistant, a voice assistant. You understand and answer your questions. You should only search online if the user requests it. You must activate the fun_voice function only if the user requests it. I can call functions! You cannot interact with Home Assistant because the user has not configured it.  You reply with a maximum of 20 words! You must use friendly language. '
 
         self.dialogue = self.dialogue_management.add_dialogue(role='system', text=prompt)
         sentence = "Hi, what's your name? What can you do? You can control home devices." if ha_is_active else "Hi, what's your name? What can you do? . You need to tell the user that they need to configure home assistant for a better home automation experience"
@@ -42,7 +42,7 @@ class VoiceAssistant:
                     response_chat_gpt, function_response, function_name, tool_call_id = handle_function(
                         chat_completion.choices[0].message)
 
-                    response_text = response_chat_gpt or str(function_response)
+                    response_text = response_chat_gpt or str(" ".join(function_response))
 
                     if response_text is not None:
                         self.dialogue_management.add_dialogue('assistant', response_text)
