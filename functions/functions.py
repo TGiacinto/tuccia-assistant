@@ -1,6 +1,5 @@
 import json
 
-import requests
 from duckduckgo_search import DDGS
 
 from dialogue.dialogue_management import DialogueManagement
@@ -8,7 +7,6 @@ from home_assistant.alarm import Alarm
 from home_assistant.climate import Climate
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
-from text_to_speech.text_to_speech_service import TextToSpeechService, ServiceType
 from utils import utils
 
 
@@ -70,15 +68,6 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
         text=f"Device is:{response_chat_gpt['result'].split('.')[1]}   action is: {action}")
 
 
-def get_exchange(amount, currency_from, currency_to):
-    response = requests.get("https://open.er-api.com/v6/latest/" + currency_from)
-    exchange_rate = response.json()["rates"][currency_to]
-    result = amount * exchange_rate
-    result = round(result, 2)
-    return __invoke_chat_gpt_to_response(
-        prompt="You need to generate a phrase for this currency exchange",
-        text=f"amount:{amount} currency_from{currency_from} currency_to:{currency_to} result_conversion:{result} ")
-
 
 def __invoke_chat_gpt_to_response(prompt, text):
     new_management = DialogueManagement()
@@ -91,24 +80,13 @@ def __invoke_chat_gpt_to_response(prompt, text):
     return chat_gpt_answer.choices[0].message.content
 
 
-def fun_voice():
-    response = __invoke_chat_gpt_to_response(prompt=None, text='Generate a funny sentence with 10 words!')
-    tts_service = TextToSpeechService(service=ServiceType.FUN_VOICE)
-    tts_service.play_audio_from_text(response)
-    TextToSpeechService.play = False
-    return response
-
-
 def handle_function(response_message):
-    function_response = None
     function_name = None
     tool_call_id = None
     response_chat_gpt = None
     tool_calls = response_message.tool_calls
 
     available_functions = {
-        "get_currency_exchange": get_exchange,
-        "fun_voice": fun_voice,
         "search_online": search_online,
         "home_assistant": home_assistant,
         "get_devices_state": get_devices_state

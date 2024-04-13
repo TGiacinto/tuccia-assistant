@@ -1,4 +1,5 @@
 import os
+import timeit
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -30,10 +31,17 @@ class DialogueManagement:
         self.add_dialogue('user', 'error')
 
     def chat_completion(self, function=NotGiven(), tool_choice=NotGiven()):
-        return self.client.chat.completions.create(
+        start = timeit.default_timer()
+        response = self.client.chat.completions.create(
             messages=self.dialogue,
-            model="gpt-3.5-turbo-0125",
+            model="gpt-3.5-turbo-1106",
             tools=function,
             tool_choice=tool_choice,
-            temperature=0.0
+            temperature=0.0,
+            seed=42
         )
+        end = timeit.default_timer()
+        print(str(self.dialogue))
+        print(f"Il tempo di esecuzione del metodo è {end - start} secondi.")
+
+        return  response

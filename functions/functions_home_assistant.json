@@ -2,13 +2,6 @@
   {
     "type": "function",
     "function": {
-      "name": "fun_voice",
-      "description": "The fun_voice feature allows you to playfully change the assistant's voice by generating a random phrase. It should only be activated if the user wants a funny voice!"
-    }
-  },
-  {
-    "type": "function",
-    "function": {
       "name": "get_devices_state",
       "description": "The 'get_devices_state' function is designed to retrieve the current state of devices. Through this function, detailed information about the devices can be obtained, such as whether they are active or inactive, their availability, and other details relevant to their operational status."
     }
