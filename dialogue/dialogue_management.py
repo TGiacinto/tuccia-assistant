@@ -38,7 +38,8 @@ class DialogueManagement:
             tools=function,
             tool_choice=tool_choice,
             temperature=0.0,
-            seed=42
+            seed=42,
+            max_tokens=100
         )
         end = timeit.default_timer()
         print(str(self.dialogue))

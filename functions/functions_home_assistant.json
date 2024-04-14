@@ -11,7 +11,8 @@
             "enum": [
               "light",
               "alarm_control_panel",
-              "climate"
+              "climate",
+              "temperature"
             ],
             "type": "string",
             "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
