@@ -22,9 +22,9 @@ class ServiceType(Enum):
 
 class TextToSpeechService:
     play = True
+    service = ServiceType.GTTS
 
-    def __init__(self, service=ServiceType.GTTS):
-        self.service = service
+    def __init__(self):
         self.engine = self.__pyttsx3_tts_strategy(None, None)
         self._strategy_map = {
             ServiceType.GTTS: self.__google_tts_strategy,

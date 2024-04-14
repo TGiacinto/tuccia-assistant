@@ -7,7 +7,14 @@ from home_assistant.alarm import Alarm
 from home_assistant.climate import Climate
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
+from text_to_speech.text_to_speech_service import TextToSpeechService
 from utils import utils
+
+
+def __inform_user(prompt, text):
+    result = __invoke_chat_gpt_to_response(prompt=prompt, text=text)
+    text_to_speech_service = TextToSpeechService()
+    text_to_speech_service.play_audio_from_text(result)
 
 
 def search_online(user_query):
@@ -29,7 +36,7 @@ def get_devices_state(device=None, all=False):
     text = "Can you give me the status?" if all is True else f"Can you give me the information relating to the following device? Device: {device}"
 
     return __invoke_chat_gpt_to_response(
-        prompt=f'You are an vocal assistant. You must create a sentence. You have to interpret the json: {str(states)}. ',
+        prompt=f'You are an vocal assistant. You must create a sentence. You have to interpret the json: {str(states)}',
         text=text)
 
 
@@ -42,6 +49,10 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
     result = utils.filter_device(states, device, device_name)
 
     device_name += f' {location}' if device_name is not None else f' {location}'
+
+    __inform_user(
+        prompt=f"You are a voice assistant who must inform the user that the {device} are about to be {action} ",
+        text="Inform the user!")
 
     chat_gtp_response = __invoke_chat_gpt_to_response(
         prompt=f'These are all device: {str(states)}. In input you receive the name or the device. You must recognize the entity_id variable. You need to respond with json with key result: <entity_id>.',
