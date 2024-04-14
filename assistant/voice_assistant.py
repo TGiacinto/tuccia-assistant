@@ -50,6 +50,7 @@ class VoiceAssistant:
                     self.text_to_speech_service.play_audio_from_text(response_text)
 
             except Exception as e:
+                print(e)
                 error = DialogueManagement()
                 error.error()
                 chat_completion = error.chat_completion()

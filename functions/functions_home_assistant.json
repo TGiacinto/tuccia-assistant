@@ -2,32 +2,6 @@
   {
     "type": "function",
     "function": {
-      "name": "get_devices_state",
-      "description": "The 'get_devices_state' function is designed to retrieve the current state of devices. Through this function, detailed information about the devices can be obtained, such as whether they are active or inactive, their availability, and other details relevant to their operational status.",
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "device": {
-            "enum": [
-              "light",
-              "alarm_control_panel",
-              "climate",
-              "temperature"
-            ],
-            "type": "string",
-            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
-          },
-          "all": {
-            "type": "boolean",
-            "description": "indicate if you want information on all devices "
-          }
-        }
-      }
-    }
-  },
-  {
-    "type": "function",
-    "function": {
       "name": "search_online",
       "description": "This function allows users to perform online searches. When called, it prompts the user for a search query as a parameter. If the user consents to using the function, the query is sent to an online search engine, which will return relevant results.",
       "parameters": {
@@ -48,7 +22,7 @@
     "type": "function",
     "function": {
       "name": "home_assistant",
-      "description": "A method that controls the activation and deactivation of household devices. You can set also the color only for light!",
+      "description": "This function allows the devices to be turned on or off. You can set also the color only for light!",
       "parameters": {
         "type": "object",
         "properties": {
@@ -239,6 +213,32 @@
           "device",
           "action"
         ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_devices_state",
+      "description": "The 'get_devices_state' function is designed to retrieve the current state of devices. Through this function, detailed information about the devices can be obtained, such as whether they are active or inactive, their availability, and other details relevant to their operational status.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "enum": [
+              "light",
+              "alarm_control_panel",
+              "climate",
+              "temperature"
+            ],
+            "type": "string",
+            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
+          },
+          "all": {
+            "type": "boolean",
+            "description": "indicate if you want information on all devices "
+          }
+        }
       }
     }
   }

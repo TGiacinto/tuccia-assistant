@@ -30,8 +30,11 @@ class DialogueManagement:
                           'If you receive the word: Error, you must respond to the user by telling them to formulate the sentence in another way. You have to be friendly')
         self.add_dialogue('user', 'error')
 
-    def chat_completion(self, function=NotGiven(), tool_choice=NotGiven()):
+    def chat_completion(self, function=NotGiven(), tool_choice=NotGiven(), response_json=False):
         start = timeit.default_timer()
+
+        response_format = {"type": "json_object"} if response_json is True else {"type": "text"}
+
         response = self.client.chat.completions.create(
             messages=self.dialogue,
             model="gpt-3.5-turbo-1106",
@@ -39,10 +42,11 @@ class DialogueManagement:
             tool_choice=tool_choice,
             temperature=0.0,
             seed=42,
-            max_tokens=100
+            max_tokens=100,
+            response_format=response_format
         )
         end = timeit.default_timer()
         print(str(self.dialogue))
         print(f"Il tempo di esecuzione del metodo è {end - start} secondi.")
 
-        return  response
+        return response

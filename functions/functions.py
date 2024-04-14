@@ -44,17 +44,21 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
     device_name += f' {location}' if device_name is not None else f' {location}'
 
     chat_gtp_response = __invoke_chat_gpt_to_response(
-        prompt=f'These are all device: {str(states)}. In input you receive the name and the device. You need to figure out which ones are in the json. You need to respond with json with key result: <entity_id>.',
-        text=f'name: {device_name} and device: {device}')
-
-    response_chat_gpt = json.loads(chat_gtp_response)
+        prompt=f'These are all device: {str(states)}. In input you receive the name or the device. You must recognize the entity_id variable. You need to respond with json with key result: <entity_id>.',
+        text=f'name: {device_name} and device: {device}',
+        response_json=True
+    )
 
     if len(result) > 1 and all is False:
         return __invoke_chat_gpt_to_response(
             prompt="You must inform the user that you have found matching devices. You must ask him the exact name of the device he wants to operate",
             text="There are many devices!")
 
-    entity_id = response_chat_gpt['result']
+    try:
+        entity_id = chat_gtp_response['result']
+    except Exception as e:
+        entity_id = json.loads(chat_gtp_response)['result']
+
     domain = entity_id.split('.')[0]
 
     invoke = {
@@ -67,17 +71,17 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
 
     return __invoke_chat_gpt_to_response(
         prompt="You must inform the user that the device has been turned on or turned off",
-        text=f"Device is:{response_chat_gpt['result'].split('.')[1]}   action is: {action}")
+        text=f"Device is:{entity_id.split('.')[1]}   action is: {action}")
 
 
-def __invoke_chat_gpt_to_response(prompt, text):
+def __invoke_chat_gpt_to_response(prompt, text, response_json=False):
     new_management = DialogueManagement()
     new_management.clear()
     if prompt is not None:
         new_management.add_dialogue('system', prompt)
 
     new_management.add_dialogue('user', text)
-    chat_gpt_answer = new_management.chat_completion()
+    chat_gpt_answer = new_management.chat_completion(response_json=response_json)
     return chat_gpt_answer.choices[0].message.content
 
 
