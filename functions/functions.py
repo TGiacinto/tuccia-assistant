@@ -22,13 +22,15 @@ def search_online(user_query):
         str(final_result))
 
 
-def get_devices_state():
+def get_devices_state(device=None, all=False):
     ha = HomeAssistant()
     states = ha.get_my_states()
 
+    text = "Can you give me the status?" if all is True else f"Can you give me the information relating to the following device? Device: {device}"
+
     return __invoke_chat_gpt_to_response(
-        prompt=f'You are an vocal assistant. You must create a sentence. You have to interpret the json:: {str(states)}. ',
-        text=f'Can you give me the status?')
+        prompt=f'You are an vocal assistant. You must create a sentence. You have to interpret the json: {str(states)}. ',
+        text=text)
 
 
 def home_assistant(device, device_name=None, all=None, action=None, location=None, color=None):
@@ -66,7 +68,6 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
     return __invoke_chat_gpt_to_response(
         prompt="You must inform the user that the device has been turned on or turned off",
         text=f"Device is:{response_chat_gpt['result'].split('.')[1]}   action is: {action}")
-
 
 
 def __invoke_chat_gpt_to_response(prompt, text):
