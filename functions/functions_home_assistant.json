@@ -1,0 +1,245 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "search_online",
+      "description": "This function allows users to perform online searches. When called, it prompts the user for a search query as a parameter. If the user consents to using the function, the query is sent to an online search engine, which will return relevant results.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "user_query": {
+            "type": "string",
+            "description": "The search query string entered by the user for the online search."
+          }
+        },
+        "required": [
+          "user_query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "home_assistant",
+      "description": "This function allows the devices to be turned on or off. You can set also the color only for light!",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "Indicates the location of the device. This can be the name of the room or a general description of the device's position in your home."
+          },
+          "device": {
+            "enum": [
+              "light",
+              "alarm_control_panel",
+              "climate"
+            ],
+            "type": "string",
+            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
+          },
+          "device_name": {
+            "type": "string",
+            "description": "This parameter is another string representing the name of the specific device you want to access or control in your home. This is typically a unique identifier for each device."
+          },
+          "all": {
+            "type": "boolean",
+            "description": "If you want to turn everything on or off."
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ON",
+              "OFF"
+            ],
+            "description": "Indicates the action to be performed. Accepts only 'ON' to activate and 'OFF' to deactivate."
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "aliceblue",
+              "antiquewhite",
+              "aqua",
+              "aquamarine",
+              "azure",
+              "beige",
+              "bisque",
+              "blanchedalmond",
+              "blue",
+              "blueviolet",
+              "brown",
+              "burlywood",
+              "cadetblue",
+              "chartreuse",
+              "chocolate",
+              "coral",
+              "cornflowerblue",
+              "cornsilk",
+              "crimson",
+              "cyan",
+              "darkblue",
+              "darkcyan",
+              "darkgoldenrod",
+              "darkgray",
+              "darkgreen",
+              "darkgrey",
+              "darkkhaki",
+              "darkmagenta",
+              "darkolivegreen",
+              "darkorange",
+              "darkorchid",
+              "darkred",
+              "darksalmon",
+              "darkseagreen",
+              "darkslateblue",
+              "darkslategray",
+              "darkslategrey",
+              "darkturquoise",
+              "darkviolet",
+              "deeppink",
+              "deepskyblue",
+              "dimgray",
+              "dimgrey",
+              "dodgerblue",
+              "firebrick",
+              "floralwhite",
+              "forestgreen",
+              "fuchsia",
+              "gainsboro",
+              "ghostwhite",
+              "gold",
+              "goldenrod",
+              "gray",
+              "green",
+              "greenyellow",
+              "grey",
+              "honeydew",
+              "hotpink",
+              "indianred",
+              "indigo",
+              "ivory",
+              "khaki",
+              "lavender",
+              "lavenderblush",
+              "lawngreen",
+              "lemonchiffon",
+              "lightblue",
+              "lightcoral",
+              "lightcyan",
+              "lightgoldenrodyellow",
+              "lightgray",
+              "lightgreen",
+              "lightgrey",
+              "lightpink",
+              "lightsalmon",
+              "lightseagreen",
+              "lightskyblue",
+              "lightslategray",
+              "lightslategrey",
+              "lightsteelblue",
+              "lightyellow",
+              "lime",
+              "limegreen",
+              "linen",
+              "magenta",
+              "maroon",
+              "mediumaquamarine",
+              "mediumblue",
+              "mediumorchid",
+              "mediumpurple",
+              "mediumseagreen",
+              "mediumslateblue",
+              "mediumspringgreen",
+              "mediumturquoise",
+              "mediumvioletred",
+              "midnightblue",
+              "mintcream",
+              "mistyrose",
+              "moccasin",
+              "navajowhite",
+              "navy",
+              "navyblue",
+              "oldlace",
+              "olive",
+              "olivedrab",
+              "orange",
+              "orangered",
+              "orchid",
+              "palegoldenrod",
+              "palegreen",
+              "paleturquoise",
+              "palevioletred",
+              "papayawhip",
+              "peachpuff",
+              "peru",
+              "pink",
+              "plum",
+              "powderblue",
+              "purple",
+              "red",
+              "rosybrown",
+              "royalblue",
+              "saddlebrown",
+              "salmon",
+              "sandybrown",
+              "seagreen",
+              "seashell",
+              "sienna",
+              "silver",
+              "skyblue",
+              "slateblue",
+              "slategray",
+              "slategrey",
+              "snow",
+              "springgreen",
+              "steelblue",
+              "tan",
+              "teal",
+              "thistle",
+              "tomato",
+              "turquoise",
+              "violet",
+              "wheat",
+              "white",
+              "whitesmoke",
+              "yellow",
+              "yellowgreen"
+            ],
+            "description": "Light color. You must recognize the color!"
+          }
+        },
+        "required": [
+          "device",
+          "action"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_devices_state",
+      "description": "The 'get_devices_state' function is designed to retrieve the current state of devices. Through this function, detailed information about the devices can be obtained, such as whether they are active or inactive, their availability, and other details relevant to their operational status.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "enum": [
+              "light",
+              "alarm_control_panel",
+              "climate",
+              "temperature"
+            ],
+            "type": "string",
+            "description": "This parameter is a string representing the type of device you want to control. For instance, it might be something like 'light', 'alarm', etc. This word must be in English!"
+          },
+          "all": {
+            "type": "boolean",
+            "description": "indicate if you want information on all devices "
+          }
+        }
+      }
+    }
+  }
+]

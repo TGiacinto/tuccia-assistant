@@ -3,14 +3,13 @@ import random
 import time
 from enum import Enum
 
+import gtts
 import pyttsx3
+import vlc
 from elevenlabs import save
 from elevenlabs.client import ElevenLabs
 
-from text_to_speech_open_ai import TextToSpeechOpenAi
-
-import gtts
-import vlc
+from text_to_speech.text_to_speech_open_ai import TextToSpeechOpenAi
 
 
 class ServiceType(Enum):
@@ -23,9 +22,9 @@ class ServiceType(Enum):
 
 class TextToSpeechService:
     play = True
+    service = ServiceType.GTTS
 
-    def __init__(self, service=ServiceType.GTTS):
-        self.service = service
+    def __init__(self):
         self.engine = self.__pyttsx3_tts_strategy(None, None)
         self._strategy_map = {
             ServiceType.GTTS: self.__google_tts_strategy,
@@ -75,7 +74,7 @@ class TextToSpeechService:
 
         if not TextToSpeechService.play: return
 
-        path = "audio.mp3"
+        path = "../audio.mp3"
 
         # check if service is valid
         if self.service not in self._strategy_map:
