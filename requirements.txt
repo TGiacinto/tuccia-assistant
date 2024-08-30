@@ -8,6 +8,6 @@ PyAudio
 pyttsx3
 pyobjc
 py3-tts
-elevenlabs
+elevenlabs==1.7.0
 duckduckgo_search
 HomeAssistant-API
