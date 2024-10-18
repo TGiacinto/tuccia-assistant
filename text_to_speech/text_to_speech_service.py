@@ -38,10 +38,11 @@ class TextToSpeechService:
         client = ElevenLabs(
             api_key=os.environ.get("ELEVENLABS_KEY")
         )
+
         audio = client.generate(
             text=text,
             voice="Giovanni",
-            model="eleven_multilingual_v2",
+            model="eleven_turbo_v2_5",
             stream=False
         )
         save(audio, path)

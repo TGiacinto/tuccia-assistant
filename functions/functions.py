@@ -7,14 +7,7 @@ from home_assistant.alarm import Alarm
 from home_assistant.climate import Climate
 from home_assistant.home_assistant import HomeAssistant
 from home_assistant.light import Light
-from text_to_speech.text_to_speech_service import TextToSpeechService
 from utils import utils
-
-
-def __inform_user(prompt, text):
-    result = __invoke_chat_gpt_to_response(prompt=prompt, text=text)
-    text_to_speech_service = TextToSpeechService()
-    text_to_speech_service.play_audio_from_text(result)
 
 
 def search_online(user_query):
@@ -50,13 +43,9 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
 
     device_name += f' {location}' if device_name is not None else f' {location}'
 
-    __inform_user(
-        prompt=f"You are a voice assistant who must inform the user that the {device} are about to be {action} ",
-        text="Inform the user!")
-
     chat_gtp_response = __invoke_chat_gpt_to_response(
-        prompt=f'These are all device: {str(states)}. In input you receive the name or the device. You must recognize the entity_id variable. You need to respond with json with key result: <entity_id>.',
-        text=f'name: {device_name} and device: {device}',
+        prompt=f'You are an assistant who must extract information and return a sentence in which you inform the user about the action of the device. In input you receive the device and the action. These are all the device {str(states)} where you need to extract the entity_id. Reply with a json in which you insert result:<entity_id> and sentence:<sentence for the user> into the variable',
+        text=f'name: {device_name} device: {device} action: {action}',
         response_json=True
     )
 
@@ -65,13 +54,10 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
             prompt="You must inform the user that you have found matching devices. You must ask him the exact name of the device he wants to operate",
             text="There are many devices!")
 
-    try:
-        entity_id = chat_gtp_response['result']
-    except Exception as e:
-        entity_id = json.loads(chat_gtp_response)['result']
+    response_json = json.loads(chat_gtp_response)
 
-    domain = entity_id.split('.')[0]
-
+    domain = response_json['result'].split('.')[0]
+    entity_id = response_json['result']
     invoke = {
         'light': Light(home_assistant=ha, color=color),
         'alarm_control_panel': Alarm(ha),
@@ -80,9 +66,7 @@ def home_assistant(device, device_name=None, all=None, action=None, location=Non
 
     invoke[domain].activate(entity_id) if action == 'ON' else invoke[domain].deactivate(entity_id)
 
-    return __invoke_chat_gpt_to_response(
-        prompt="You must inform the user that the device has been turned on or turned off",
-        text=f"Device is:{entity_id.split('.')[1]}   action is: {action}")
+    return response_json['sentence']
 
 
 def __invoke_chat_gpt_to_response(prompt, text, response_json=False):

@@ -37,7 +37,7 @@ class DialogueManagement:
 
         response = self.client.chat.completions.create(
             messages=self.dialogue,
-            model="gpt-3.5-turbo-1106",
+            model="gpt-4o-mini",
             tools=function,
             tool_choice=tool_choice,
             temperature=0.0,
